@@ -1,6 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
+import projectContext from '../../context/project/projectContext';
 
-const newProject = () => {
+const NewProject = () => {
+
+    const ProjectContext = useContext(projectContext);
+    const { errorsForm, newProject, showForm, addProject, showErrorsForm } = ProjectContext;
 
     const [project, setProject] = useState({
         name: ""
@@ -17,6 +21,14 @@ const newProject = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        if(name === ''){
+            showErrorsForm();
+            return
+        };
+        addProject(project);
+        setProject({
+            name: ""
+        });
     }
 
     return (
@@ -24,32 +36,39 @@ const newProject = () => {
             <button
                 type="button"
                 className="btn btn-block btn-primary"
+                onClick={() => showForm()}
             >
                 New Project
             </button>
 
-            <form
-                className="formNewProject"
-                onSubmit={handleSubmit}
-            >
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Project Name"                    
-                    className="input-text"
-                    value={name}
-                    onChange={handleChange}
-                />
+            {
+                newProject
+                ?
+                    <form
+                        className="formNewProject"
+                        onSubmit={handleSubmit}
+                    >
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Project Name"                    
+                            className="input-text"
+                            value={name}
+                            onChange={handleChange}
+                        />
 
-                <input
-                    type="submit"
-                    value="Add Project"
-                    className="btn btn-block btn-primary"
-                />
-            </form>
-
+                        <input
+                            type="submit"
+                            value="Add Project"
+                            className="btn btn-block btn-primary"
+                        />
+                    </form>
+                :
+                    null
+            }
+            { errorsForm ? <p className="message error">Name is required</p> : null }
         </Fragment>
     )
 }
 
-export default newProject
+export default NewProject
