@@ -24,14 +24,16 @@ const Login = () => {
     return (
         <div className="userForm">
             <div className="formContainer shadowDark">
-                <h1>Login</h1>
+                <h1 data-cy='title'>Login</h1>
 
                 <form
                     onSubmit={handleSubmit}
+                    data-cy="form-login"
                 >
                     <div className="fieldForm">
                         <label htmlFor="email">Email</label>
                         <input
+                            data-cy="email-input"
                             type="email"
                             id="email"
                             name="email"
@@ -44,6 +46,7 @@ const Login = () => {
                     <div className="fieldForm">
                         <label htmlFor="password">Password</label>
                         <input
+                            data-cy="password-input"
                             type="password"
                             id="password"
                             name="password"
@@ -55,6 +58,7 @@ const Login = () => {
 
                     <div className="fieldForm">
                         <input
+                            data-cy="submit-login"
                             type="submit"
                             value="Login"
                             className="btn btn-primary btn-block"
@@ -64,6 +68,7 @@ const Login = () => {
                 </form>
 
                 <Link
+                    data-cy="new-account"
                     to={'/create-account'}
                     className="account-link"
                 >

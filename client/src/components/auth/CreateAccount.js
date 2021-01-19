@@ -26,15 +26,27 @@ const CreateAccount = () => {
 
     return (
         <div className="userForm">
+            { alert ? 
+                <div
+                    data-cy="alert"
+                    className={`alert ${alert.category}`}
+                >
+                    {alert.msg}
+                </div>
+            :
+                null
+            }
             <div className="formContainer shadowDark">
                 <form
                     onSubmit={handleSubmit}
+                    data-cy="form-create-account"
                 >
-                    <h1>Create an Account</h1>
+                    <h1 data-cy="title">Create an Account</h1>
 
                     <div className="fieldForm">
                         <label htmlFor="name">Name</label>
                         <input
+                            data-cy="name-input"
                             type="text"
                             name="name"
                             id="name"
@@ -47,6 +59,7 @@ const CreateAccount = () => {
                     <div className="fieldForm">
                         <label htmlFor="email">Email</label>
                         <input
+                            data-cy="email-input"
                             type="email"
                             name="email"
                             id="email"
@@ -59,6 +72,7 @@ const CreateAccount = () => {
                     <div className="fieldForm">
                         <label htmlFor="password">Password</label>
                         <input
+                            data-cy="password-input"
                             type="password"
                             name="password"
                             id="password"
@@ -71,6 +85,7 @@ const CreateAccount = () => {
                     <div className="fieldForm">
                         <label htmlFor="confirmPass">Confirm Password</label>
                         <input
+                            data-cy="confirm-input"
                             type="password"
                             name="confirmPass"
                             id="confirmPass"
@@ -82,6 +97,7 @@ const CreateAccount = () => {
 
                     <div className="fieldForm">                        
                         <input
+                            data-cy="submit-account"
                             type="submit"
                             value="Create an Account"
                             className="btn btn-primary btn-block"
@@ -93,6 +109,7 @@ const CreateAccount = () => {
                 <Link
                     to={"/"}
                     className="account-link"
+                    data-cy="goto-index"
                 >
                     Go to Login
                 </Link>
