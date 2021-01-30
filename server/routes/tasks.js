@@ -8,7 +8,7 @@ router.post('/',
     authenticate,
     [
         check('name','Field name is required').not().isEmpty(),
-        check('project','Field name is required').not().isEmpty()
+        check('projectId','Field name is required').not().isEmpty()
     ],
     taskController.createTask
 );

@@ -45,7 +45,7 @@ exports.updateProject = async (req, res) => {
     }
 
     try {
-        let project = Project.findById(req.params.id);
+        let project = await Project.findById(req.params.id);
 
         if(!project) return res.status(400).json({ msg: 'Project not found' });
 
@@ -63,10 +63,10 @@ exports.updateProject = async (req, res) => {
 };
 
 exports.deleteProject = async (req, res) => {
-
+    
     try {
-        let project = Project.findById(req.params.id);
-
+        let project = await Project.findById(req.params.id);
+        
         if(!project) return res.status(400).json({ msg: 'Project not found' });
 
         if(project.owner.toString() !== req.user.id) return res.status(401).json({ msg: 'Not authorized'});

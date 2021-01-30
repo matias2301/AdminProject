@@ -1,12 +1,11 @@
 import React, { useReducer } from 'react';
 import TaskContext from './taskContext';
 import taskReducer from './taskReducer';
-import { v4 as uuidv4 } from 'uuid';
+import axiosClient from '../../config/axios';
 
 import {
     PROJECT_TASKS,
-    ADD_TASK,
-    EDIT_TASK,
+    ADD_TASK,    
     UPDATE_TASK,
     DELETE_TASK,
     ERROR_TASK,
@@ -14,16 +13,10 @@ import {
     CLEAN_TASK
 } from '../../types';
 
-const TaskState = props =>{    
+const TaskState = props => {    
 
-    const initialState = {
-        tasks: [
-            {id: 1, name: 'Elegir plataforma' , state: true, projectId: 1},
-            {id: 2, name: 'Elegir colores' , state: false, projectId: 2},
-            {id: 3, name: 'Elegir plataforma de pago' , state: false, projectId: 3},
-            {id: 4, name: 'Elegir hosting' , state: true, projectId: 1}
-        ],
-        tasksByProject: null,
+    const initialState = {        
+        tasksByProject: [],
         errorsTask: false,
         actualTask: null
     }
@@ -31,47 +24,65 @@ const TaskState = props =>{
     const [state, dispatch] = useReducer(taskReducer, initialState);
 
     // get tasks
-    const getTasksByProject = projectId => {
+    const getTasksByProject = async projectId => {
         
-        dispatch({
-            type: PROJECT_TASKS,
-            payload: projectId
-        });
+        try {
+            const response = await axiosClient.get('/api/task', { params: { projectId }});
+            
+            dispatch({
+                type: PROJECT_TASKS,
+                payload: response.data.tasks
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // add a task to the selected project
-    const addTask = task => {      
-        task.id = uuidv4();
-        task.state = false;
-
-        dispatch({
-            type: ADD_TASK,
-            payload: task
-        });            
-    }
-
-    // edit a task
-    const editTask = task => {        
-        dispatch({
-            type: EDIT_TASK,
-            payload: task
-        });
+    const addTask = async task => {
+        
+        try {
+            const response = await axiosClient.post('/api/task', task);
+            
+            dispatch({
+                type: ADD_TASK,
+                payload: response.data
+            });
+            getTasksByProject(task.projectId);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // update a task
-    const updateTask = task => {
-        dispatch({
-            type: UPDATE_TASK,
-            payload: task
-        });
+    const updateTask = async task => {
+        try {
+            const response = await  axiosClient.put(`/api/task/${task._id}`, task);
+
+            dispatch({
+                type: UPDATE_TASK,
+                payload: response.data.task
+            });
+            getTasksByProject(task.projectId);
+        } catch (error) {
+            console.log(error);
+        }        
     }
 
     // delete a task to the selected project
-    const deleteTask = id => {
-        dispatch({
-            type: DELETE_TASK,
-            payload: id
-        });
+    const deleteTask = async (id, projectId) => {
+
+        try {
+            const response = await axiosClient.delete(`/api/task/${id}`, { params: { projectId }})
+            dispatch({
+                type: DELETE_TASK,
+                payload: response.data.msg
+            });
+            getTasksByProject(projectId);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // show error message for tasks
@@ -97,14 +108,12 @@ const TaskState = props =>{
 
     return (
         <TaskContext.Provider
-            value = {{
-                tasks: state.tasks,
+            value = {{                
                 tasksByProject: state.tasksByProject,
                 errorsTask: state.errorsTask,
                 actualTask: state.actualTask,
                 getTasksByProject,
-                addTask,
-                editTask,
+                addTask,                
                 updateTask,
                 deleteTask,
                 showErrorsTasks,

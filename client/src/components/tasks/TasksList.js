@@ -22,16 +22,17 @@ const TasksList = () => {
             <ul className="tasksList">
                 { tasksByProject.length === 0 
                     ? 
-                        <li className="task"><p>There is no tasks</p></li>
+                        (<li className="task"><p>There is no tasks</p></li>)
                     : 
                         <TransitionGroup>
                             {tasksByProject.map( task => (
                                 <CSSTransition
-                                    key={task.id}
+                                    key={task._id}                                    
                                     timeout={200}
                                     classNames="task"
                                 >
-                                    <Task                                        
+                                    <Task
+                                        key={task._id}                                                                  
                                         task={task}
                                     />
                                 </CSSTransition>
@@ -43,7 +44,7 @@ const TasksList = () => {
             <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => deleteProject(actualProject[0].id)}
+                onClick={() => deleteProject(actualProject[0]._id)}
             >
                 Delete Project
             </button>

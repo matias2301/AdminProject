@@ -261,6 +261,9 @@ aside  {
   color: var(--blanco);
 }
 
+.close-session{
+  color: #ffffff;
+}
 
 .task-enter,
 .project-enter {

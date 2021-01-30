@@ -34,12 +34,20 @@ exports.authenticateUser = async (req, res) => {
             res.json({ token });
         });
 
-
-        res.json({ msg: 'User created successfully' });
-
     } catch (error) {
         console.log(error);
         res.status(400).send('An error has ocurred');
     }
 
+};
+
+exports.getAuthenticatedUser = async (req, res) => {
+    try {
+        const user = await (await User.findById(req.user.id));
+        // const user = await (await User.findById(req.user.id)).select('-password');
+        res.json({ user });
+    } catch (error) {
+        console.log(error);        
+        res.status(500).json({ msg: 'An error has ocurred'});
+    }
 }

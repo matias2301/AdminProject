@@ -5,6 +5,7 @@ import {
     ERROR_PROJECT,
     ACTUAL_PROJECT,
     DELETE_PROJECT,
+    PROJECT_ERROR
 } from '../../types';
 
 const projectReducer = (state, action) => {
@@ -34,17 +35,23 @@ const projectReducer = (state, action) => {
                 ...state,
                 errorsForm: true
             }
+    
+        case PROJECT_ERROR:
+            return {
+                ...state,
+                msg_error: action.payload
+            }
 
         case ACTUAL_PROJECT:
             return {
                 ...state,
-                actualProject: state.projects.filter( project => project.id === action.payload )
+                actualProject: state.projects.filter( project => project._id === action.payload )
             }
 
         case DELETE_PROJECT:
             return {
                 ...state,
-                projects: state.projects.filter( project => project.id !== action.payload ),
+                projects: state.projects.filter( project => project._id !== action.payload ),
                 actualProject: null,
             }
 

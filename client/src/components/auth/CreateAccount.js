@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import alertContext from '../../context/alerts/alertContext';
+import authContext from '../../context/authentication/authContext';
 
-const CreateAccount = () => {
+const CreateAccount = (props) => {
+
+    const AlertContext = useContext(alertContext);
+    const { alert, showAlert } = AlertContext;
+
+    const AuthContext = useContext(authContext);
+    const { message, auth, registerUser } = AuthContext;
 
     const [user, setUser] = useState({
         name: "",
@@ -12,6 +20,14 @@ const CreateAccount = () => {
 
     const { name, email, password, confirmPass } = user;
 
+    useEffect(() => {
+        if(auth) props.history.push('/projects');
+
+        if(message) showAlert(message.msg, message.category);
+
+        //eslint-disable-next-line
+    }, [message, auth, props.history]);
+
     const handleChange = e => {
         setUser({
             ...user,
@@ -21,6 +37,32 @@ const CreateAccount = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        if( name.trim() === '' ||
+            email.trim() === '' ||
+            password.trim() === '' ||
+            confirmPass.trim() === ''
+        ){
+            showAlert('All fields are required', 'alert-error');
+            return
+        };
+
+        if( password.length < 6 ){
+            showAlert('Password must be at least 6 characters', 'alert-error');
+            return
+        };
+
+        if( password !== confirmPass ){
+            showAlert('Passwords does not match', 'alert-error');
+            return
+        };
+
+        registerUser({
+            name,
+            email,
+            password
+        })
+
     }
 
 

@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import alertContext from '../../context/alerts/alertContext';
+import authContext from '../../context/authentication/authContext';
 
-const Login = () => {
+const Login = (props) => {
+
+    const AlertContext = useContext(alertContext);
+    const { alert, showAlert } = AlertContext;
+
+    const AuthContext = useContext(authContext);
+    const { message, auth, loginUser } = AuthContext;
 
     const [user, setUser] = useState({
         email: "",
@@ -9,6 +17,14 @@ const Login = () => {
     });
 
     const { email, password } = user;
+
+    useEffect(() => {        
+        if(auth) props.history.push('/projects');
+
+        if(message) showAlert(message.msg, message.category);
+
+        //eslint-disable-next-line
+    }, [message, auth, props.history]);
 
     const handleChange = e => {
         setUser({
@@ -19,10 +35,30 @@ const Login = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        if( email.trim() === '' ||
+            password.trim() === ''            
+        ){
+            showAlert('All fields are required', 'alert-error');
+            return
+        };
+
+        loginUser({ email, password });
     }
 
     return (
         <div className="userForm">
+            { alert ? 
+                <div
+                    data-cy="alert"
+                    className={`alert ${alert.category}`}
+                >
+                    {alert.msg}
+                </div>
+            :
+                null
+            }
+            
             <div className="formContainer shadowDark">
                 <h1 data-cy='title'>Login</h1>
 

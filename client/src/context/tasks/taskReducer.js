@@ -1,7 +1,6 @@
 import {
     PROJECT_TASKS,
-    ADD_TASK,
-    EDIT_TASK,
+    ADD_TASK,    
     UPDATE_TASK,
     DELETE_TASK,
     ERROR_TASK,
@@ -16,27 +15,26 @@ const taskReducer = (state, action) => {
         case PROJECT_TASKS:
             return {
                 ...state,
-                tasksByProject: state.tasks.filter( task => task.projectId === action.payload )
+                tasksByProject: action.payload
             }
 
         case ADD_TASK:            
             return {
                 ...state,
-                tasks: [action.payload, ...state.tasks],
+                tasksByProject: [action.payload, ...state.tasksByProject],
                 errorsTask: false
             }       
-
-        case EDIT_TASK:
+        
         case UPDATE_TASK:            
             return {
                 ...state,
-                tasks: state.tasks.map( task => task.id === action.payload.id ? action.payload : task )
+                tasksByProject: state.tasksByProject.map( task => task._id === action.payload.id ? action.payload : task )
             }
 
         case DELETE_TASK:
             return {
                 ...state,
-                tasks: state.tasks.filter( task => task.id !== action.payload )
+                tasksByProject: state.tasksByProject.filter( task => task._id !== action.payload )
             }
         
         case ERROR_TASK:

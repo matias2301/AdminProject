@@ -12,9 +12,8 @@ const FormTask = () => {
         actualTask,
         errorsTask,
         addTask,
-        editTask,
+        updateTask,
         showErrorsTasks,
-        getTasksByProject,
         cleanTask
     } = TaskContext;
 
@@ -48,14 +47,13 @@ const FormTask = () => {
 
         if( actualTask === null ) {
             
-            task.projectId = actualProject[0].id;
+            task.projectId = actualProject[0]._id;
             addTask(task);                            
         } else {            
-            editTask(task);
+            updateTask(task);
             cleanTask();
         }
-
-        getTasksByProject(actualProject[0].id);
+        
         setTask({
             name: ''
         });
