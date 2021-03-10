@@ -23,7 +23,7 @@ const ProjectsList = () => {
     if(projects.length === 0) return <p>Create a new Project</p>;
 
     return (
-        <ul className="projectsList">
+        <ul data-cy="project-list" className="projectsList">
 
             { alert ? 
                 <div

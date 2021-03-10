@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import alertContext from '../../context/alerts/alertContext';
 import authContext from '../../context/authentication/authContext';
+import Alert from '../layout/Alert';
 
 const CreateAccount = (props) => {
 
@@ -61,23 +62,16 @@ const CreateAccount = (props) => {
             name,
             email,
             password
-        })
-
+        });
     }
 
 
     return (
         <div className="userForm">
-            { alert ? 
-                <div
-                    data-cy="alert"
-                    className={`alert ${alert.category}`}
-                >
-                    {alert.msg}
-                </div>
-            :
-                null
-            }
+            <Alert
+                alert={alert}
+            />
+
             <div className="formContainer shadowDark">
                 <form
                     onSubmit={handleSubmit}

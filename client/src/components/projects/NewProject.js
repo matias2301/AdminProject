@@ -34,6 +34,7 @@ const NewProject = () => {
     return (
         <Fragment>
             <button
+                data-cy="btn-newProject"
                 type="button"
                 className="btn btn-block btn-primary"
                 onClick={() => showForm()}
@@ -49,6 +50,7 @@ const NewProject = () => {
                         onSubmit={handleSubmit}
                     >
                         <input
+                            data-cy="input-newProject"
                             type="text"
                             name="name"
                             placeholder="Project Name"                    
@@ -58,6 +60,7 @@ const NewProject = () => {
                         />
 
                         <input
+                            data-cy="submit-newProject"
                             type="submit"
                             value="Add Project"
                             className="btn btn-block btn-primary"
@@ -66,7 +69,7 @@ const NewProject = () => {
                 :
                     null
             }
-            { errorsForm ? <p className="message error">Name is required</p> : null }
+            { errorsForm ? <p data-cy="alert" className="message error">Name is required</p> : null }
         </Fragment>
     )
 }

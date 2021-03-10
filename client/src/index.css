@@ -262,7 +262,7 @@ aside  {
 }
 
 .close-session{
-  color: #ffffff;
+  color: var(--blanco);
 }
 
 .task-enter,

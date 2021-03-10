@@ -1,75 +1,41 @@
 /// <reference types="cypress" />
 
-describe('<Form />', () => {
-    it('<Login /> - Verify Login view', () => {
+describe('<Login />', () => {
+    it('<Login /> - Validation, Alerts and Authenticate User', () => {
         cy.visit('/');
 
-        cy.get('[data-cy=title]')
+        cy.get('[data-cy="submit-login"]').click();
+
+        cy.get('[data-cy="alert"]')
+            .should('exist')
             .invoke('text')
-            .should('equal', 'Login'); //'have.text'
+            .should('equal', 'All fields are required');
 
-        // Verify Form
-        cy.get('[data-cy=form-login]')
-            .should('exist');
+        cy.get('[data-cy="alert"]')
+            .should('have.class', 'alert-error');
 
-        cy.get('[data-cy=email-input]')
-            .should('exist');
+            // test with an existing user
+        cy.get('[data-cy="email-input"]').type('user3@user3.com');
+        cy.get('[data-cy="password-input"]').type('123');
+        
+        cy.get('[data-cy="submit-login"]').click();
 
-        cy.get('[data-cy=password-input]')
-            .should('exist');
-
-        cy.get('[data-cy=submit-login]')
+        cy.get('[data-cy="alert"]')
             .should('exist')
-            .should('have.value', 'Login')
-            .should('have.class', 'btn-primary').and('have.class', 'btn');
+            .invoke('text')
+            .should('equal', 'Verify Email and Password');
 
-        cy.get('[data-cy=new-account]')            
+        cy.get('[data-cy="email-input"]').clear().type('user3@user3.com');
+        cy.get('[data-cy="password-input"]').clear().type('123456');
+        
+        cy.get('[data-cy="submit-login"]').click();
+
+        cy.get('[data-cy="select-project"]')
             .should('exist')
-            .should('have.prop', 'tagName')
-            .should('eq', 'A');
-
-        cy.get('[data-cy=new-account]')
-            .should('have.attr', 'href')
-            .should('eq', '/create-account');
-
-        cy.visit('/create-account');
+            .invoke('text')
+            .should('equal', 'Select a project');
+        
+        cy.get('[data-cy="close-session"]').click();        
     });
     
-    it('<CreateAccount />', () => {
-        cy.visit('/create-account');
-
-        cy.get('[data-cy=title]')
-            // .invoke('text')
-            .should('have.text', 'Create an Account'); //'have.text'
-
-        // // Verify Form
-        cy.get('[data-cy=form-create-account]')
-            .should('exist');
-
-        cy.get('[data-cy=name-input]')
-            .should('exist');
-
-        cy.get('[data-cy=email-input]')
-            .should('exist');
-
-        cy.get('[data-cy=password-input]')
-            .should('exist')
-            .should('have.prop', 'type')
-            .should('equal', 'password');
-
-        cy.get('[data-cy=confirm-input]')
-            .should('exist');
-
-        cy.get('[data-cy=submit-account]')
-            .should('exist')
-            .should('have.value', 'Create an Account')
-            .should('have.class', 'btn-primary').and('have.class', 'btn');
-
-        cy.get('[data-cy=goto-index]')   
-            .should('have.attr', 'href')
-            .should('eq', '/');
-
-        cy.visit('/');
-    });
-        
 });

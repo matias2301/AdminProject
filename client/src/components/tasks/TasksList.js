@@ -12,8 +12,7 @@ const TasksList = () => {
     const TaskContext = useContext(taskContext);
     const { tasksByProject } = TaskContext;
 
-
-    if( !actualProject ) return <h2>Select a project</h2>;
+    if( !actualProject ) return <h2 data-cy="select-project">Select a project</h2>;
 
     return (
         <Fragment>

@@ -24,7 +24,7 @@ const Task = ({ task }) => {
     }
 
     return (
-        <li className="task shadow">
+        <li data-cy="task" className="task shadow">
             <p>{task.name} </p>
 
             <div className="state">
@@ -32,6 +32,7 @@ const Task = ({ task }) => {
                     ? 
                         (
                             <button
+                                data-cy="task-complete"
                                 type="button"
                                 className="complete"
                                 onClick={() => handleUpdate(task)}
@@ -42,6 +43,7 @@ const Task = ({ task }) => {
                     :
                         (
                             <button
+                                data-cy="task-incomplete"
                                 type="button"
                                 className="incomplete"
                                 onClick={() => handleUpdate(task)}
@@ -53,6 +55,7 @@ const Task = ({ task }) => {
             </div>            
             <div className="actions">
                 <button
+                    data-cy="btn-edit"
                     type="button"
                     className="btn btn-primary"
                     onClick={() => handleEdit(task)}                    
@@ -60,6 +63,7 @@ const Task = ({ task }) => {
                     Edit
                 </button>
                 <button
+                    data-cy="btn-delete"
                     type="button"
                     className="btn btn-secondary"
                     onClick={() => handleDelete(task._id)}
