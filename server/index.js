@@ -9,7 +9,7 @@ const app = express();
 connectDB();
 
 //app port
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
 
 //enable cors
 app.use(cors());
@@ -24,6 +24,6 @@ app.use('/api/project', require('./routes/projects'));
 app.use('/api/task', require('./routes/tasks'));
 
 //listen port
-app.listen( PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen( port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
 });
